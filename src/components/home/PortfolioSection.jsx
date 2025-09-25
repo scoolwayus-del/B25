@@ -1,6 +1,9 @@
 import React, { useRef, useEffect } from 'react'
+import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/all'
 import { Link } from 'react-router-dom'
+import MasonryGrid from '../portfolio/MasonryGrid'
 
 // 🔹 Video data updated with provided links (rest remain same)
 const teasers = [
@@ -41,79 +44,95 @@ const highlights = [
 ]
 
 const PortfolioSection = () => {
-  const trackRef = useRef(null)
+  const sectionRef = useRef(null)
   const allVideos = [...teasers, ...highlights]
 
-  useEffect(() => {
-    // Infinite marquee scroll effect
-    gsap.to(trackRef.current, {
-      xPercent: -50, // move half its width
-      repeat: -1,
-      duration: 40, // adjust speed
-      ease: "linear"
-    })
+  gsap.registerPlugin(ScrollTrigger)
+
+  useGSAP(() => {
+    // Animate section title
+    gsap.fromTo('.portfolio-title',
+      {
+        opacity: 0,
+        y: 50
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: '.portfolio-title',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      }
+    )
+
+    // Animate description
+    gsap.fromTo('.portfolio-description',
+      {
+        opacity: 0,
+        y: 30
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        delay: 0.2,
+        scrollTrigger: {
+          trigger: '.portfolio-description',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      }
+    )
   }, [])
 
   return (
     <section
       id="portfolio"
-      className="min-h-screen section-dark-alt text-white relative depth-3 overflow-hidden section-transition"
+      ref={sectionRef}
+      className="min-h-screen section-dark-alt text-white relative depth-3 section-transition"
     >
       <div className="cinematic-overlay"></div>
+      
+      {/* Top fade gradient */}
+      <div className="absolute top-0 left-0 right-0 h-32 sm:h-40 lg:h-48 bg-gradient-to-b from-black/70 via-black/30 to-transparent pointer-events-none z-10"></div>
+      
       <div className="container mx-auto section-padding">
         <div className="text-center component-margin space-y-4 sm:space-y-6 lg:space-y-8">
-          <h2 className="font-[font2] heading-responsive-xl uppercase mb-4 sm:mb-6 lg:mb-8 leading-tight text-layer-3 text-glow">
+          <h2 className="portfolio-title font-[font2] heading-responsive-xl uppercase mb-4 sm:mb-6 lg:mb-8 leading-tight text-layer-3 text-glow">
             Our Portfolio
           </h2>
-          <div className="floating-panel-dark max-width-content">
+          <div className="portfolio-description floating-panel-dark max-width-content">
             <p className="font-[font1] text-responsive leading-relaxed text-layer-2">
               Découvrez notre collection de films de mariage cinématographiques
             </p>
           </div>
         </div>
 
-        <div className="portfolio-showcase space-y-12 sm:space-y-16 lg:space-y-20">
-          
-          {/* Moving Video Track */}
-          <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-pattern-dots">
-            <div
-              ref={trackRef}
-              className="flex gap-4 sm:gap-6 lg:gap-8 xl:gap-12 w-[200%] py-4 sm:py-6 lg:py-8" // doubled width for seamless loop
-            >
-              {[...allVideos, ...allVideos].map((video, index) => (
-                <div 
-                  key={index}
-                  className="video-card flex-shrink-0 w-64 sm:w-72 lg:w-80 xl:w-96 video-glass gpu-accelerated"
-                >
-                  <div className="relative aspect-video bg-black rounded-lg sm:rounded-xl overflow-hidden">
-                    <iframe
-                      className="absolute top-0 left-0 w-full h-full"
-                      src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&mute=1&controls=1&modestbranding=1&rel=0&showinfo=0`}
-                      title={`Portfolio video ${index + 1}`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Masonry Video Grid */}
+        <div className="portfolio-showcase relative">
+          <MasonryGrid videos={allVideos} />
+        </div>
 
-          {/* Portfolio Button */}
-          <div className="text-center">
-            <Link 
-              to="/projects"
-              className="btn-pill btn-primary h-12 sm:h-16 lg:h-20 px-8 sm:px-12 lg:px-16 inline-flex items-center justify-center group"
-            >
-              <span className="font-[font2] text-base sm:text-xl lg:text-2xl">
-                View Our Portfolio
-              </span>
-            </Link>
-          </div>
+        {/* Portfolio Button */}
+        <div className="text-center component-margin relative z-20">
+          <Link 
+            to="/projects"
+            className="btn-pill btn-primary h-12 sm:h-16 lg:h-20 px-8 sm:px-12 lg:px-16 inline-flex items-center justify-center group"
+          >
+            <span className="font-[font2] text-base sm:text-xl lg:text-2xl">
+              View Our Portfolio
+            </span>
+          </Link>
         </div>
       </div>
+      
+      {/* Bottom fade gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-40 lg:h-48 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none z-10"></div>
     </section>
   )
 }
