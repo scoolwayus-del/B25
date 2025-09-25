@@ -1241,11 +1241,18 @@ select.input-inset {
     object-position: center center;
 }
 
-.masonry-grid {
+/* Cinematic Video Grid Styles */
+.cinematic-grid {
+  /* Ensure consistent spacing and alignment */
+  place-items: center;
   column-gap: clamp(1rem, 4vw, 2rem);
 }
 
-.masonry-grid .masonry-card {
+.cinematic-video-card {
+  /* GPU acceleration for smooth animations */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
   display: inline-block;
   width: 100%;
   margin-bottom: clamp(1rem, 4vw, 2rem);
@@ -1253,42 +1260,50 @@ select.input-inset {
   page-break-inside: avoid;
 }
 
-/* Masonry responsive columns */
-@media (max-width: 639px) {
-  .masonry-grid {
+.cinematic-video-card:hover {
+  /* Enhanced glow effect on hover */
+  filter: drop-shadow(0 0 20px rgba(211, 253, 80, 0.3));
+}
+
+/* Responsive video grid adjustments */
+@media (max-width: 640px) {
+  .cinematic-grid {
+    gap: 1rem;
     columns: 1;
     column-gap: 1rem;
   }
 }
 
-@media (min-width: 640px) and (max-width: 1023px) {
-  .masonry-grid {
+@media (min-width: 641px) and (max-width: 1024px) {
+  .cinematic-grid {
+    gap: 1.5rem;
     columns: 2;
     column-gap: 1.5rem;
   }
 }
 
-@media (min-width: 1024px) and (max-width: 1279px) {
-  .masonry-grid {
+@media (min-width: 1025px) {
+  .cinematic-grid {
+    gap: 2rem;
     columns: 3;
     column-gap: 2rem;
   }
 }
 
 @media (min-width: 1280px) {
-  .masonry-grid {
+  .cinematic-grid {
     columns: 4;
     column-gap: 2rem;
   }
 }
 
 /* Enhanced video card hover effects */
-.masonry-card {
+.cinematic-video-card {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
 }
 
-.masonry-card:hover {
+.cinematic-video-card:hover {
   transform: scale(1.05) translateZ(0);
   z-index: 10;
   position: relative;
@@ -1306,12 +1321,12 @@ select.input-inset {
   }
 }
 
-.masonry-card {
+.cinematic-video-card {
   animation: masonryFadeIn 0.6s ease-out forwards;
 }
 
 /* Enhanced video glass effect for masonry */
-.masonry-card .video-glass {
+.cinematic-video-card .video-glass {
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(clamp(12px, 2.5vw, 16px));
   -webkit-backdrop-filter: blur(clamp(12px, 2.5vw, 16px));
@@ -1322,7 +1337,7 @@ select.input-inset {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.masonry-card:hover .video-glass {
+.cinematic-video-card:hover .video-glass {
   background: rgba(255, 255, 255, 0.04);
   border-color: rgba(211, 253, 80, 0.15);
   box-shadow: 
@@ -1331,7 +1346,7 @@ select.input-inset {
 }
 
 /* Masonry loading states */
-.masonry-card .loading-responsive {
+.cinematic-video-card .loading-responsive {
   width: clamp(30px, 6vw, 40px);
   height: clamp(30px, 6vw, 40px);
   border: clamp(2px, 0.5vw, 3px) solid rgba(211, 253, 80, 0.3);
@@ -1339,11 +1354,11 @@ select.input-inset {
 }
 
 /* Performance optimizations for masonry */
-.masonry-grid {
+.cinematic-grid {
   contain: layout style paint;
 }
 
-.masonry-card {
+.cinematic-video-card {
   contain: layout style paint;
   will-change: transform, opacity;
   transform: translateZ(0);
@@ -1353,16 +1368,16 @@ select.input-inset {
 
 /* Mobile masonry optimizations */
 @media (max-width: 767px) {
-  .masonry-card {
+  .cinematic-video-card {
     margin-bottom: 1rem;
   }
   
-  .masonry-card:hover {
+  .cinematic-video-card:hover {
     transform: scale(1.02) translateZ(0);
   }
   
   /* Reduce expensive effects on mobile */
-  .masonry-card .video-glass {
+  .cinematic-video-card .video-glass {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
