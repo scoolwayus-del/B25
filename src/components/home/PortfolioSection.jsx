@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
 import { Link } from 'react-router-dom'
-import MasonryGrid from '../portfolio/MasonryGrid'
+import CinematicGrid from '../portfolio/CinematicGrid'
 
 // 🔹 Video data updated with provided links (rest remain same)
 const teasers = [
@@ -113,9 +113,9 @@ const PortfolioSection = () => {
           </div>
         </div>
 
-        {/* Masonry Video Grid */}
-        <div className="portfolio-showcase relative">
-          <MasonryGrid videos={allVideos} />
+        {/* Cinematic Video Grid - 2 Rows Only */}
+        <div className="portfolio-showcase relative py-8 sm:py-12 lg:py-16">
+          <CinematicGrid videos={allVideos} />
         </div>
 
         {/* Portfolio Button */}
